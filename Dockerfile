@@ -16,6 +16,7 @@ COPY . /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Switch to the non-root user.
+RUN adduser appuser
 USER appuser
 
 # Set environment variables (these can be overridden by docker-compose).
