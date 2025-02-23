@@ -1,0 +1,4 @@
+chardet==5.1.0
+python-magic==0.4.27
+libmagic==0.4.6
+python-magic-bin==0.4.14
