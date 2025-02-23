@@ -16,7 +16,7 @@ import logging
 from multiprocessing import cpu_count
 from concurrent.futures import ProcessPoolExecutor
 from cue import parse_cue
-from src.cmd import make_split_cmd, process_onefile
+from music_cmd import make_split_cmd, process_onefile
 from utils import ensure_directory_exists, write_text_to_file
 
 # Configure logging with UTF-8 encoding for both console and file handlers.
