@@ -22,5 +22,8 @@ ENV DIR_OUT=/music/out
 ENV DRY_RUN=false
 ENV HIDE_FFMPEG_LOGS=true
 
+# Set the working directory.
+WORKDIR /app/src
+
 # Run the main.py script from the src folder.
-CMD ["python", "src/main.py"]
+CMD ["python", "main.py"]
