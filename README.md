@@ -2,7 +2,7 @@
 
 🤮 Belches FLAC  as separate tracks from the most common cases—supporting files with extensions such as ".flac", ".ape", ".wav", ".alac", and ".tta" in combination with cue sheets, including handling multiple cues and multi-CD releases 
 
-**flac_belcher** is a command-line tool that processes music directories by traversing an input folder, detecting music files and cue sheets, and processing them with ffmpeg. Depending on the file type and the cue data, it either splits multi-track files based on cue sheets or processes individual music files. The tool supports parallel execution and can be deployed in various environments including standalone CLI, IDEs, Docker, and via Docker Compose.
+**flac_belcher** is a command-line tool that processes music directories by traversing an input folder, detecting music files and cue sheets, and processing them with ffmpeg. Depending on the file type and the cue data, it either splits multi-track files based on cue sheets or processes individual music files. The tool supports parallel execution and can be deployed in various environments including standalone CLI (tested on Windows and Linux), IDEs, Docker, and via Docker Compose.
 
 ---
 
@@ -122,7 +122,7 @@ You can customize environment variables in the `docker-compose.yml` file if need
 The application uses several environment variables (or CLI arguments) for configuration:
 
 - **FFMPEG_PATH:**  
-  Path to the ffmpeg executable (default: `ffmpeg`).
+  Path to the ffmpeg executable (default: `ffmpeg`). Use .exe file for Win.
 
 - **DIR_IN:**  
   Input directory containing music files (default: `/music/in`).
@@ -154,5 +154,5 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 
 ## Contact
 
-For any questions or issues, please open an issue on the GitHub repository or contact the maintainer at [your.email@example.com](mailto:your.email@example.com).
+For any questions or issues, please open an issue on the GitHub repository or contact the maintainer at vladislav.k.work@gmail.com.
 ````markdown
