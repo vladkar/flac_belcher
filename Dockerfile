@@ -1,5 +1,5 @@
 # Use a base image that includes ffmpeg.
-FROM jrottenberg/ffmpeg:4.4-slim
+FROM jrottenberg/ffmpeg:4.1-ubuntu
 
 # Install Python 3 and pip.
 RUN apt-get update && \
