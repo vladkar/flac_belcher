@@ -1,6 +1,6 @@
 # Flac Belcher
 
-🤮 Belches FLAC  as separate tracks from the most common cases—supporting files with extensions such as ".flac", ".ape", ".wav", ".alac", and ".tta" in combination with cue sheets, including handling multiple cues and multi-CD releases 
+🤮 Belches FLAC as separate tracks from the most common cases—supporting files with extensions such as ".flac", ".ape", ".wav", ".alac", and ".tta" in combination with cue sheets, including handling multiple cues and multi-CD releases. Works in a batch mode. Output can be used for further processing (e.g., with MusicBrainz Picard).
 
 **flac_belcher** is a command-line tool that processes music directories by traversing an input folder, detecting music files and cue sheets, and processing them with ffmpeg. Depending on the file type and the cue data, it either splits multi-track files based on cue sheets or processes individual music files. The tool supports parallel execution and can be deployed in various environments including standalone CLI (tested on Windows and Linux), IDEs, Docker, and via Docker Compose.
 
