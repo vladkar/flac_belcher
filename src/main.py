@@ -19,6 +19,9 @@ from cue import parse_cue
 from music_cmd import make_split_cmd, process_onefile
 from utils import ensure_directory_exists, write_text_to_file
 
+# Supported music file types (case-insensitive)
+MUSIC_TYPES = [".flac", ".ape", ".wav", ".alac", ".tta"]
+
 # Configure logging with UTF-8 encoding for both console and file handlers.
 formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
 
@@ -77,13 +80,29 @@ def process_cue_files(root, cues, ffmpeg_path, dir_out_current, dry_run, hide_ff
         if status == 0:
             cue_music_file = os.path.join(root, general["file"])
 
+            # If the referenced file does not exist, try alternative extensions
+            # for comon cases when cue have different music file extension in metadata
+            if not os.path.isfile(cue_music_file):
+                cue_base_name, _ = os.path.splitext(general["file"])
+                for ext in MUSIC_TYPES:
+                    alternative_file = os.path.join(root, cue_base_name + ext)
+                    if os.path.isfile(alternative_file):
+                        logging.warning(
+                            f"Referenced file '{general['file']}' in cue '{cue}' not found. "
+                            f"Using alternative file '{alternative_file}'."
+                        )
+                        cue_music_file = alternative_file
+                        general["file"] = cue_base_name + ext  # Update cue reference
+                        break
+
+            # If still not found, mark as a bad cue file
             if not os.path.isfile(cue_music_file):
                 bad_cues.append(cue)
-                logging.error(f"Music file '{cue_music_file}' referenced in cue '{cue}' does not exist.")
+                logging.error(f"Music file '{general['file']}' referenced in cue '{cue}' does not exist.")
                 continue
 
             if cue_music_file not in processed_files:
-                formats.add(pathlib.Path(general["file"]).suffix)
+                formats.add(pathlib.Path(cue_music_file).suffix)
                 cmds = make_split_cmd(tracks, ffmpeg_path, cue_music_file, dir_out_current, verbose=False)
                 if not dry_run:
                     execute_commands(cmds, paral=True, hide_ffmpeg_logs=hide_ffmpeg_logs)
@@ -145,7 +164,6 @@ def process_music_directory(dir_in, dir_out, ffmpeg_path, dry_run=False, hide_ff
     total_formats = set()
     all_bad_cues = []
     only_cue_dirs = []
-    music_types = [".flac", ".ape", ".wav", ".alac", ".tta"]
 
     total_subdirs = sum(1 for _ in os.walk(dir_in))
     counter = 0
@@ -155,27 +173,23 @@ def process_music_directory(dir_in, dir_out, ffmpeg_path, dry_run=False, hide_ff
         logging.info(f"Processing directory {counter}/{total_subdirs}: {root}")
         logging.debug(f"Subdirectories: {dirs} | Files: {files}")
 
-        # Create corresponding output directory based on the current root folder.
         dir_out_current = os.path.join(dir_out, os.path.basename(root))
 
-        # Filter music and cue files.
-        music_files = [f for f in files if pathlib.Path(f).suffix.lower() in music_types]
+        # Filter music and cue files using the global MUSIC_TYPES.
+        music_files = [f for f in files if pathlib.Path(f).suffix.lower() in MUSIC_TYPES]
         cues = [f for f in files if pathlib.Path(f).suffix.lower() == ".cue"]
 
         if cues or music_files:
             ensure_directory_exists(dir_out_current)
 
-        # Mark directories that contain only cue files.
         if cues and not music_files:
             only_cue_dirs.append(root)
             logging.warning(f"Directory '{root}' contains only cue files.")
 
-        # Process cue files if the number of music files is less than or equal to the number of cues.
         if cues and (len(music_files) <= len(cues)):
             formats, bad_cues = process_cue_files(root, cues, ffmpeg_path, dir_out_current, dry_run, hide_ffmpeg_logs)
             total_formats.update(formats)
             all_bad_cues.extend(bad_cues)
-        # Process individual music files.
         elif music_files:
             process_individual_music_files(root, music_files, ffmpeg_path, dir_out_current, dry_run, hide_ffmpeg_logs)
 
