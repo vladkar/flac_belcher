@@ -1,18 +1,15 @@
 # Use a minimal Python image.
 FROM python:3.12-slim
 
-# Install fixed versions of ffmpeg and libmagic-dev.
-# (These version numbers are examples and should be verified for your distro)
+# Install ffmpeg and libmagic-dev (without fixed version constraints).
 RUN apt-get update && \
-    apt-get install -y \
-      ffmpeg \
-      libmagic-dev && \
+    apt-get install -y ffmpeg libmagic-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Set the working directory.
 WORKDIR /app
 
-# Copy the requirements.txt from the root and install Python dependencies.
+# Copy the requirements.txt from the root and install dependencies.
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
