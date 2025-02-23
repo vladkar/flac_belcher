@@ -1,20 +1,20 @@
-# Use a base image that includes ffmpeg.
-FROM jrottenberg/ffmpeg:4.1-ubuntu
+# Use a minimal Python image.
+FROM python:3.12-slim
 
-# Install Python 3 and pip.
+# Install fixed versions of ffmpeg and libmagic-dev.
+# (These version numbers are examples and should be verified for your distro)
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip && \
+    apt-get install -y \
+      ffmpeg=7:4.4-1 \
+      libmagic-dev=1:5.39-1 && \
     rm -rf /var/lib/apt/lists/*
-
-# Override the default ENTRYPOINT (set it to an empty value)
-ENTRYPOINT []
 
 # Set the working directory.
 WORKDIR /app
 
-# Copy the requirements.txt from the root and install dependencies.
+# Copy the requirements.txt from the root and install Python dependencies.
 COPY requirements.txt /app/
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the source code from the src folder into the container.
 COPY src/ /app/
@@ -27,4 +27,4 @@ ENV DRY_RUN=false
 ENV HIDE_FFMPEG_LOGS=true
 
 # Run the main.py script.
-CMD ["python3", "main.py"]
+CMD ["python", "main.py"]
