@@ -6,6 +6,9 @@ RUN apt-get update && \
     apt-get install -y python3 python3-pip && \
     rm -rf /var/lib/apt/lists/*
 
+# Override the default ENTRYPOINT (set it to an empty value)
+ENTRYPOINT []
+
 # Set the working directory.
 WORKDIR /app
 
