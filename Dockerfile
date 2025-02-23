@@ -23,4 +23,4 @@ ENV DRY_RUN=false
 ENV HIDE_FFMPEG_LOGS=true
 
 # Run the main.py script from the src folder.
-CMD ["python", "./src/main.py"]
+CMD ["python", "src/main.py"]
