@@ -15,6 +15,9 @@ COPY . /app/
 # Install Python dependencies.
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Switch to the non-root user.
+USER appuser
+
 # Set environment variables (these can be overridden by docker-compose).
 ENV FFMPEG_PATH=ffmpeg
 ENV DIR_IN=/music/in
