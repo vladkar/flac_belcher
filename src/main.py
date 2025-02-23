@@ -31,15 +31,15 @@ stream_handler.setFormatter(formatter)
 if hasattr(stream_handler.stream, "reconfigure"):
     stream_handler.stream.reconfigure(encoding="utf-8")
 
-file_handler = logging.FileHandler("../music_processing.log", mode="a", encoding="utf-8")
-file_handler.setLevel(logging.INFO)
-file_handler.setFormatter(formatter)
+# file_handler = logging.FileHandler("../music_processing.log", mode="a", encoding="utf-8")
+# file_handler.setLevel(logging.INFO)
+# file_handler.setFormatter(formatter)
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 logger.handlers.clear()  # Remove any existing handlers.
 logger.addHandler(stream_handler)
-logger.addHandler(file_handler)
+# logger.addHandler(file_handler)
 
 
 # Get default values from environment variables; if not provided, use fallback defaults.
